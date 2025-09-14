@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  primary:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+
+  cache:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/cable_migrate
+
+test:
+  primary:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+
+  cache:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/cable_migrate
+
+production:
+  primary:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+
+  cache:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *default
+    url: "postgresql://neondb_owner:npg_MwCAPoGpK48L@ep-blue-bush-ad9b9bkw-pooler.c-2.us-east-1.aws.neon.tech/chapterly-database?sslmode=require&channel_binding=require"
+    migrations_paths: db/cable_migrate
