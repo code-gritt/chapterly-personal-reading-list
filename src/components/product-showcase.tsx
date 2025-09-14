@@ -43,11 +43,13 @@ export function ProductShowcase() {
           }}
           className="mx-auto w-full max-w-5xl"
         >
-          <img
-            src={appScreen}
-            alt="The product screenshot"
-            className="mt-14"
-            ref={appImageRef}
+          <video
+            className="mt-14 w-full rounded-lg"
+            src="/read.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
           />
         </motion.div>
       </div>
