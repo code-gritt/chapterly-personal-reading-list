@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 
-import { useMediaQuery } from '../hooks/use-media-query'
-import { logosTickers } from '../utils/logos-tickers'
+import { useMediaQuery } from "../hooks/use-media-query";
+import { logosTickers } from "../utils/logos-tickers";
 
 export function LogoTicker() {
-  const { isMobile } = useMediaQuery()
+  const { isMobile } = useMediaQuery();
 
   return (
     <div className="bg-black py-24 text-white">
@@ -17,12 +17,12 @@ export function LogoTicker() {
           <motion.div
             transition={{
               duration: 20,
-              ease: 'linear',
+              ease: "linear",
               repeat: Infinity,
             }}
             className="grid grid-cols-2 items-start justify-items-center gap-x-4 gap-y-4 sm:flex sm:flex-none sm:justify-center sm:gap-16 sm:pr-16"
             initial={isMobile ? {} : { translateX: 0 }}
-            animate={isMobile ? {} : { translateX: '-50%' }}
+            animate={isMobile ? {} : { translateX: "-50%" }}
           >
             {Array.from({ length: 2 }).map(() =>
               logosTickers.map((logo) => (
@@ -38,5 +38,5 @@ export function LogoTicker() {
         </div>
       </div>
     </div>
-  )
+  );
 }

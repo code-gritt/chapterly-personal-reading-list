@@ -1,40 +1,40 @@
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { useEffect, useRef } from "react";
 
-import { Feature } from '../utils/features-list'
-import * as Icons from './icons'
+import { Feature } from "../utils/features-list";
+import * as Icons from "./icons";
 
 interface FeatureCardProps {
-  feature: Feature
+  feature: Feature;
 }
 
 export function FeatureCard({
   feature: { description, id, title },
 }: FeatureCardProps) {
-  const offsetX = useMotionValue(-100)
-  const offsetY = useMotionValue(-100)
+  const offsetX = useMotionValue(-100);
+  const offsetY = useMotionValue(-100);
 
-  const maskImage = useMotionTemplate`radial-gradient(100px 100px at ${offsetX}px ${offsetY}px, black, transparent)`
+  const maskImage = useMotionTemplate`radial-gradient(100px 100px at ${offsetX}px ${offsetY}px, black, transparent)`;
 
-  const border = useRef<HTMLDivElement | null>(null)
+  const border = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       if (!border.current) {
-        return
+        return;
       }
 
-      const borderRect = border.current.getBoundingClientRect()
-      offsetX.set(e.x - borderRect.x)
-      offsetY.set(e.y - borderRect.y)
-    }
+      const borderRect = border.current.getBoundingClientRect();
+      offsetX.set(e.x - borderRect.x);
+      offsetY.set(e.y - borderRect.y);
+    };
 
-    window.addEventListener('mousemove', updateMousePosition)
+    window.addEventListener("mousemove", updateMousePosition);
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition)
-    }
-  }, [offsetX, offsetY])
+      window.removeEventListener("mousemove", updateMousePosition);
+    };
+  }, [offsetX, offsetY]);
 
   return (
     <div
@@ -55,5 +55,5 @@ export function FeatureCard({
       <h3 className="mt-6 font-bold">{title}</h3>
       <p className="mt-2 text-white/70">{description}</p>
     </div>
-  )
+  );
 }

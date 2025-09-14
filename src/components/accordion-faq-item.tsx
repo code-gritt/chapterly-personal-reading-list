@@ -1,12 +1,12 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from "framer-motion";
 
-import { FaqItem } from '../utils/faqs-list'
-import * as Icons from './icons'
+import { FaqItem } from "../utils/faqs-list";
+import * as Icons from "./icons";
 
 interface AccordionItemProps {
-  fqaItem: FaqItem
-  isOpen: boolean
-  onClick: () => void
+  fqaItem: FaqItem;
+  isOpen: boolean;
+  onClick: () => void;
 }
 
 export function AccordionFAQItem({
@@ -28,7 +28,7 @@ export function AccordionFAQItem({
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0, marginTop: 0 }}
-            animate={{ opacity: 1, height: 'auto', marginTop: '16px' }}
+            animate={{ opacity: 1, height: "auto", marginTop: "16px" }}
             exit={{ opacity: 0, height: 0, marginTop: 0 }}
           >
             {answer}
@@ -36,5 +36,5 @@ export function AccordionFAQItem({
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

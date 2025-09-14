@@ -1,40 +1,40 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AnimationControls, motion, useAnimation } from 'framer-motion'
-import { useEffect } from 'react'
+import { AnimationControls, motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 
-import cursoImage from './../assets/images/cursor.svg'
-import messageImage from './../assets/images/message.svg'
-import { ArrowRight as IconArroRight } from './icons'
+import cursoImage from "./../assets/images/cursor.svg";
+import messageImage from "./../assets/images/message.svg";
+import { ArrowRight as IconArroRight } from "./icons";
 
 export function Hero() {
-  const cursoImageAnimateControls = useAnimation()
-  const messageImageAnimateControls = useAnimation()
+  const cursoImageAnimateControls = useAnimation();
+  const messageImageAnimateControls = useAnimation();
 
   const floatAnimation = {
     y: [0, -10, 0],
     transition: {
       duration: 2,
       repeat: Infinity,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
-  }
+  };
 
   const startFloating = (controls: AnimationControls) => {
-    controls.start(floatAnimation)
-  }
+    controls.start(floatAnimation);
+  };
 
   useEffect(() => {
-    startFloating(cursoImageAnimateControls)
-    startFloating(messageImageAnimateControls)
-  }, [cursoImageAnimateControls, messageImageAnimateControls])
+    startFloating(cursoImageAnimateControls);
+    startFloating(messageImageAnimateControls);
+  }, [cursoImageAnimateControls, messageImageAnimateControls]);
 
   async function handleDragEnd(controls: AnimationControls) {
     await controls.start({
       x: 0,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeInOut' },
-    })
-    startFloating(controls)
+      transition: { duration: 0.6, ease: "easeInOut" },
+    });
+    startFloating(controls);
   }
 
   return (
@@ -46,9 +46,9 @@ export function Hero() {
             href="#"
             className="inline-flex gap-3 rounded-lg border border-zinc-800 px-2 py-1"
           >
-            <span className="text-white/50">Version 2.0 is here</span>
+            <span className="text-white/50">Chapterly v2.0 just launched</span>
             <span className="inline-flex items-center gap-1">
-              <span>Read More</span>
+              <span>See What’s New</span>
               <IconArroRight />
             </span>
           </a>
@@ -56,7 +56,7 @@ export function Hero() {
         <div className="mt-8 flex justify-center">
           <div className="relative inline-flex">
             <h1 className="inline-flex text-center text-7xl font-bold tracking-tighter sm:text-[150px]">
-              One Task <br /> at a Time
+              One Book <br /> at a Time
             </h1>
             <motion.div
               className="absolute right-[498px] top-[70px] hidden sm:inline"
@@ -98,16 +98,16 @@ export function Hero() {
         </div>
         <div className="flex justify-center">
           <p className="mt-8 max-w-md text-center text-xl">
-            Celebrate the joy of accomplishment with an app designed to track
-            your progress, motivate your efforts, and celebrate your successes.
+            Track your reading, organize your books, and see your progress
+            grow—powered by a simple credits system that keeps you motivated.
           </p>
         </div>
         <div className="mt-8 flex justify-center">
           <button className="rounded-lg bg-white px-5 py-3 font-medium text-black">
-            Get for free
+            Start Free with 100 Credits
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }

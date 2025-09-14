@@ -1,5 +1,5 @@
-import { IconProps } from '@phosphor-icons/react'
-import React from 'react'
+import { IconProps } from "@phosphor-icons/react";
+import React from "react";
 
 import {
   InstagramLogo,
@@ -8,46 +8,46 @@ import {
   TiktokLogo,
   XLogo,
   YoutubeLogo,
-} from './icons'
+} from "./icons";
 
 interface SocialMediaIconProps {
-  icon: React.ComponentType<IconProps>
-  name: string
-  href: string
+  icon: React.ComponentType<IconProps>;
+  name: string;
+  href: string;
 }
 
 const socialMediaList: SocialMediaIconProps[] = [
   {
-    name: 'X',
+    name: "X",
     icon: XLogo,
-    href: '#',
+    href: "#",
   },
   {
-    name: 'Instagram',
+    name: "Instagram",
     icon: InstagramLogo,
-    href: '#',
+    href: "#",
   },
   {
-    name: 'Pinterest',
+    name: "Pinterest",
     icon: PinterestLogo,
-    href: '#',
+    href: "#",
   },
   {
-    name: 'Linkedin',
+    name: "Linkedin",
     icon: LinkedinLogo,
-    href: '#',
+    href: "#",
   },
   {
-    name: 'Tiktok',
+    name: "Tiktok",
     icon: TiktokLogo,
-    href: '#',
+    href: "#",
   },
   {
-    name: 'Youtube',
+    name: "Youtube",
     icon: YoutubeLogo,
-    href: '#',
+    href: "#",
   },
-]
+];
 
 function SocialMediaIcon({ icon: Icon, name }: SocialMediaIconProps) {
   return (
@@ -55,7 +55,7 @@ function SocialMediaIcon({ icon: Icon, name }: SocialMediaIconProps) {
       <Icon weight="fill" className="h-6 w-6" />
       <span className="sr-only">{name}</span>
     </>
-  )
+  );
 }
 
 export function SocialMediaList() {
@@ -72,5 +72,5 @@ export function SocialMediaList() {
         </a>
       ))}
     </div>
-  )
+  );
 }

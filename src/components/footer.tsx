@@ -1,4 +1,4 @@
-import { SocialMediaList } from './social-media'
+import { SocialMediaList } from "./social-media";
 
 export function Footer() {
   return (
@@ -7,13 +7,12 @@ export function Footer() {
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           <div className="text-center">
             <span>
-              &copy; {new Date().getFullYear()} Copyright Your Company, Inc. All
-              rights reserved
+              &copy; {new Date().getFullYear()} Chapterly. All rights reserved.
             </span>
           </div>
           <SocialMediaList />
         </div>
       </div>
     </footer>
-  )
+  );
 }

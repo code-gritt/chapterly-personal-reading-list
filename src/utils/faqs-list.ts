@@ -1,32 +1,38 @@
 export interface FaqItem {
-  id: string
-  question: string
-  answer: string
+  id: string;
+  question: string;
+  answer: string;
 }
 
 export const faqsList: FaqItem[] = [
   {
-    id: '1',
-    question: 'What payment methods do you accept?',
+    id: "1",
+    question: "How do credits work in Chapterly?",
     answer:
-      'We accept all major credit cards, PayPal, and various other payment methods depending on your location. Please contact our support team for more information on accepted payment methods in your region.',
+      "Every new user starts with 100 free credits. Adding a book costs 5 credits, and generating a reading summary costs 10 credits. You can purchase more credits anytime via PayPal.",
   },
   {
-    id: '2',
-    question: 'How does the pricing work for teams?',
+    id: "2",
+    question: "What payment methods are available?",
     answer:
-      'Our pricing is per user, per month. This means you only pay for the number of team members you have on your account. Discounts are available for larger teams and annual subscriptions.',
+      "Currently, Chapterly supports PayPal for purchasing additional credits. More payment options will be added in future updates.",
   },
   {
-    id: '3',
-    question: 'Can I change my plan later?',
+    id: "3",
+    question: "Can I use Chapterly on mobile devices?",
     answer:
-      'Yes, you can upgrade or downgrade your plan at any time. Changes to your plan will be prorated and reflected in your next billing cycle.',
+      "Yes! Chapterly is fully responsive and works seamlessly on desktops, tablets, and smartphones so you can manage your reading list anywhere.",
   },
   {
-    id: '4',
-    question: 'Is my data secure?',
+    id: "4",
+    question: "What kind of books can I add?",
     answer:
-      'Security is our top priority. We use state-of-the-art encryption and comply with the best industry practices to ensure that your data is stored securely and accessed only by authorized users.',
+      "You can add any book you like by entering the title, author, and optional notes. Chapterly is designed to be flexible for all types of readers—fiction, non-fiction, or academic.",
   },
-]
+  {
+    id: "5",
+    question: "Do my credits or books expire?",
+    answer:
+      "No, your credits and saved books do not expire. You can return anytime and continue from where you left off.",
+  },
+];

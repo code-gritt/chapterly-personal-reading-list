@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { faqsList } from '../utils/faqs-list'
-import { AccordionFAQItem } from './accordion-faq-item'
+import { faqsList } from "../utils/faqs-list";
+import { AccordionFAQItem } from "./accordion-faq-item";
 
 export function Faqs() {
-  const [openFaqId, setOpenFaqId] = useState<string | null>(null)
+  const [openFaqId, setOpenFaqId] = useState<string | null>(null);
 
   return (
     <div className="bg-black bg-gradient-to-b from-[#5D2CA8] to-black py-[72px] text-white sm:py-24">
@@ -24,5 +24,5 @@ export function Faqs() {
         </div>
       </div>
     </div>
-  )
+  );
 }

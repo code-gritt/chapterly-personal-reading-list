@@ -1,17 +1,17 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
-import emojiStarImage from '../assets/images/emojistar.svg'
-import helixImage from '../assets/images/helix2.svg'
+import emojiStarImage from "../assets/images/emojistar.svg";
+import helixImage from "../assets/images/helix2.svg";
 
 export function CallToAction() {
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start end', 'end end'],
-  })
+    offset: ["start end", "end end"],
+  });
 
-  const translateY = useTransform(scrollYProgress, [0, 1], [40, -40])
+  const translateY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
     <div
@@ -34,11 +34,11 @@ export function CallToAction() {
           />
         </motion.div>
         <h2 className="text-5xl font-bold tracking-tighter sm:text-6xl">
-          Get instant access
+          Start your reading journey
         </h2>
         <p className="mt-5 text-xl text-white/70">
-          Celebrate the joy of accomplishment with an app designed to track your
-          progress and motivate your efforts.
+          Join Chapterly today and get 100 free credits to add books, track
+          progress, and see your reading list come to life.
         </p>
         <form className="mx-auto mt-10 flex max-w-sm flex-col gap-2.5 sm:flex-row">
           <input
@@ -50,10 +50,10 @@ export function CallToAction() {
             className="h-12 rounded-lg bg-white px-5 font-medium text-black"
             type="submit"
           >
-            Get access
+            Get Started Free
           </button>
         </form>
       </div>
     </div>
-  )
+  );
 }
