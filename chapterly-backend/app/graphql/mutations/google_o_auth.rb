@@ -10,7 +10,7 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(input:)
-      id_token = input[:idToken] # camelCase from frontend
+      id_token = input[:id_token] # ✅ snake_case
 
       begin
         # ✅ Verify ID token with Google (hardcoded client_id for now)

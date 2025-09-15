@@ -75,8 +75,8 @@ export const useAuthStore = create<AuthState>()(
               }
             }
           `;
-          // ✅ Must send idToken (camelCase)
-          const variables = { input: { idToken } };
+          // ✅ send id_token (snake_case, matches backend schema)
+          const variables = { input: { id_token: idToken } };
 
           const data = await graphqlRequest(query, variables);
 
