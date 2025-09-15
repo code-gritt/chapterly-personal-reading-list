@@ -32,7 +32,6 @@ export const useAuthStore = create<AuthState>()(
       loading: false,
       error: null,
 
-      // ✅ Fixed register mutation with input object
       register: async (email, password, username) => {
         set({ loading: true, error: null });
         try {
@@ -49,7 +48,7 @@ export const useAuthStore = create<AuthState>()(
 
           const data = await graphqlRequest(query, variables);
 
-          if (data.register.errors && data.register.errors.length > 0) {
+          if (data.register.errors?.length) {
             set({ error: data.register.errors.join(", "), loading: false });
           } else {
             set({
@@ -76,11 +75,12 @@ export const useAuthStore = create<AuthState>()(
               }
             }
           `;
-          const variables = { input: { id_token: idToken } };
+          // ✅ Must send idToken (camelCase)
+          const variables = { input: { idToken } };
 
           const data = await graphqlRequest(query, variables);
 
-          if (data.googleOAuth.errors && data.googleOAuth.errors.length > 0) {
+          if (data.googleOAuth.errors?.length) {
             set({ error: data.googleOAuth.errors.join(", "), loading: false });
           } else {
             set({
@@ -95,7 +95,6 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      // ✅ Updated login mutation (assuming LoginInput is required)
       login: async (email, password) => {
         set({ loading: true, error: null });
         try {
@@ -112,7 +111,7 @@ export const useAuthStore = create<AuthState>()(
 
           const data = await graphqlRequest(query, variables);
 
-          if (data.login.errors && data.login.errors.length > 0) {
+          if (data.login.errors?.length) {
             set({ error: data.login.errors.join(", "), loading: false });
           } else {
             set({
