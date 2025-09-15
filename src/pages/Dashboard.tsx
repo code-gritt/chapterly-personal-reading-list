@@ -4,6 +4,7 @@ import { useAuthStore } from "../stores/authStore";
 import { useUserStore } from "../stores/userStore";
 import { useBookStore } from "../stores/bookStore";
 import Loader from "../components/Loader";
+import Modal from "../components/Modal";
 
 export default function Dashboard() {
   const { user, token } = useAuthStore();
@@ -18,12 +19,20 @@ export default function Dashboard() {
     addBook,
     fetchBooks,
     markBookComplete,
+    editBook,
+    deleteBook,
     loading: bookLoading,
     error: bookError,
   } = useBookStore();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [editBookId, setEditBookId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editAuthor, setEditAuthor] = useState("");
+  const [deleteBookId, setDeleteBookId] = useState<string | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (!user || !token) {
@@ -43,6 +52,42 @@ export default function Dashboard() {
     }
   };
 
+  const handleEditBook = (book: {
+    id: string;
+    title: string;
+    author: string;
+  }) => {
+    setEditBookId(book.id);
+    setEditTitle(book.title);
+    setEditAuthor(book.author);
+    setIsEditModalOpen(true);
+  };
+
+  const handleConfirmEdit = async () => {
+    if (editBookId && editTitle && editAuthor && token) {
+      await editBook(editBookId, editTitle, editAuthor, token);
+      await fetchMe(token); // Update credits
+      setIsEditModalOpen(false);
+      setEditBookId(null);
+      setEditTitle("");
+      setEditAuthor("");
+    }
+  };
+
+  const handleDeleteBook = (id: string) => {
+    setDeleteBookId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteBookId && token) {
+      await deleteBook(deleteBookId, token);
+      await fetchMe(token); // Update credits
+      setIsDeleteModalOpen(false);
+      setDeleteBookId(null);
+    }
+  };
+
   const handleMarkComplete = async (id: string) => {
     if (token) {
       await markBookComplete(id, token);
@@ -53,6 +98,37 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black px-4 py-12">
       <Loader isLoading={userLoading || bookLoading} />
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onConfirm={handleConfirmEdit}
+        title="Edit Book"
+        message="Update the book details below."
+        confirmText="Save"
+      >
+        <input
+          type="text"
+          placeholder="Title"
+          value={editTitle}
+          onChange={(e) => setEditTitle(e.target.value)}
+          className="mb-4 w-full rounded-lg border border-white/20 bg-black/50 p-3 text-white focus:border-[#9560EB] focus:outline-none"
+        />
+        <input
+          type="text"
+          placeholder="Author"
+          value={editAuthor}
+          onChange={(e) => setEditAuthor(e.target.value)}
+          className="mb-4 w-full rounded-lg border border-white/20 bg-black/50 p-3 text-white focus:border-[#9560EB] focus:outline-none"
+        />
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Book"
+        message="Are you sure you want to delete this book? This action cannot be undone."
+        confirmText="Delete"
+      />
       <div className="container mx-auto">
         <h2 className="mb-6 text-center text-3xl font-bold text-white">
           Welcome to Your Dashboard
@@ -110,15 +186,31 @@ export default function Dashboard() {
                   <p className="text-white/70">
                     Status: {book.completed ? "Completed" : "Not Completed"}
                   </p>
-                  {!book.completed && (
+                  <div className="mt-2 flex gap-2">
+                    {!book.completed && (
+                      <button
+                        onClick={() => handleMarkComplete(book.id)}
+                        disabled={bookLoading}
+                        className="rounded-lg bg-[#9560EB] px-4 py-2 font-medium text-white hover:bg-[#6B46C1] disabled:opacity-50"
+                      >
+                        Mark Complete
+                      </button>
+                    )}
                     <button
-                      onClick={() => handleMarkComplete(book.id)}
+                      onClick={() => handleEditBook(book)}
                       disabled={bookLoading}
-                      className="mt-2 rounded-lg bg-[#9560EB] px-4 py-2 font-medium text-white hover:bg-[#6B46C1] disabled:opacity-50"
+                      className="rounded-lg bg-gray-500 px-4 py-2 font-medium text-white hover:bg-gray-600 disabled:opacity-50"
                     >
-                      Mark Complete
+                      Edit
                     </button>
-                  )}
+                    <button
+                      onClick={() => handleDeleteBook(book.id)}
+                      disabled={bookLoading}
+                      className="rounded-lg bg-red-500 px-4 py-2 font-medium text-white hover:bg-red-600 disabled:opacity-50"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
