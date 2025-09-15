@@ -104,21 +104,22 @@ export const useAuthStore = create<AuthState>()(
               }
             }
           `;
-          const variables = { input: { id_token: idToken } }; // snake_case to match backend
+          const variables = { input: { id_token: idToken } };
           const data = await graphqlRequest(query, variables);
 
           if (data.googleOAuth.errors?.length) {
-            set({ error: data.googleOAuth.errors.join(", "), loading: false });
+            set({ error: data.googleOAuth.errors.join(", ") });
           } else {
             set({
               user: data.googleOAuth.user,
               token: data.googleOAuth.token,
               error: null,
-              loading: false,
             });
           }
         } catch (err: any) {
-          set({ error: err.message, loading: false });
+          set({ error: err.message });
+        } finally {
+          set({ loading: false });
         }
       },
 

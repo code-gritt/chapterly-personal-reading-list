@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import Loader from "../components/Loader";
@@ -12,28 +12,37 @@ declare global {
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, googleOAuth, loading, error } = useAuthStore();
+  const { login, googleOAuth, loading, error, user } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleGoogleLogin = () => {
+  // Initialize Google once
+  useEffect(() => {
     if (window.google) {
       window.google.accounts.id.initialize({
         client_id:
-          "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com",
+          "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com", // ✅ from .env
         callback: async (response: any) => {
-          // response.credential = Google ID Token (JWT)
           await googleOAuth(response.credential);
-          if (!error) navigate("/dashboard");
         },
       });
-
-      window.google.accounts.id.prompt(); // Show Google one-tap dialog
     }
-  };
+  }, [googleOAuth]);
+
+  // Redirect after login success
+  useEffect(() => {
+    if (user && !loading) {
+      navigate("/dashboard");
+    }
+  }, [user, loading, navigate]);
 
   const handleLogin = async () => {
     await login(email, password);
-    if (!error) navigate("/dashboard");
+  };
+
+  const handleGoogleLogin = () => {
+    if (window.google) {
+      window.google.accounts.id.prompt(); // shows one-tap
+    }
   };
 
   return (
