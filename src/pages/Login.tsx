@@ -17,16 +17,17 @@ export default function Login() {
 
   const handleGoogleLogin = () => {
     if (window.google) {
-      window.google.accounts.oauth2
-        .initTokenClient({
-          client_id: "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com",
-          scope: "email profile",
-          callback: async (tokenResponse: any) => {
-            await googleOAuth(tokenResponse.access_token);
-            if (!error) navigate("/dashboard");
-          },
-        })
-        .requestAccessToken();
+      window.google.accounts.id.initialize({
+        client_id:
+          "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com",
+        callback: async (response: any) => {
+          // response.credential is the ID Token (JWT)
+          await googleOAuth(response.credential);
+          if (!error) navigate("/dashboard");
+        },
+      });
+
+      window.google.accounts.id.prompt(); // Opens the one-tap dialog
     }
   };
 
