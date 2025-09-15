@@ -12,21 +12,8 @@ declare global {
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, googleOAuth, loading, error, user } = useAuthStore();
+  const { login, loading, error, user } = useAuthStore();
   const navigate = useNavigate();
-
-  // Initialize Google once
-  useEffect(() => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id:
-          "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com", // ✅ from .env
-        callback: async (response: any) => {
-          await googleOAuth(response.credential);
-        },
-      });
-    }
-  }, [googleOAuth]);
 
   // Redirect after login success
   useEffect(() => {
@@ -74,18 +61,7 @@ export default function Login() {
         >
           Login
         </button>
-        <button
-          onClick={handleGoogleLogin}
-          disabled={loading}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-black hover:bg-gray-100 disabled:opacity-50"
-        >
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google"
-            className="h-5 w-5"
-          />
-          Continue with Google
-        </button>
+
         <p className="mt-4 text-center text-white/70">
           Don’t have an account?{" "}
           <button

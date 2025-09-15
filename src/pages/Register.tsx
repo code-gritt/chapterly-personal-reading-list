@@ -13,22 +13,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const { register, googleOAuth, loading, error } = useAuthStore();
+  const { register, loading, error } = useAuthStore();
   const navigate = useNavigate();
-
-  const handleGoogleRegister = () => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id:
-          "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com",
-        callback: async (response: any) => {
-          await googleOAuth(response.credential);
-          if (!error) navigate("/dashboard");
-        },
-      });
-      window.google.accounts.id.prompt();
-    }
-  };
 
   const handleRegister = async () => {
     await register(email, password, username);
@@ -71,18 +57,7 @@ export default function Register() {
         >
           Register
         </button>
-        <button
-          onClick={handleGoogleRegister}
-          disabled={loading}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-black hover:bg-gray-100 disabled:opacity-50"
-        >
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google"
-            className="h-5 w-5"
-          />
-          Continue with Google
-        </button>
+
         <p className="mt-4 text-center text-white/70">
           Already have an account?{" "}
           <button

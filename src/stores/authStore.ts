@@ -20,7 +20,7 @@ interface AuthState {
     username: string,
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  googleOAuth: (idToken: string) => Promise<void>;
+
   logout: () => void;
 }
 
@@ -89,37 +89,6 @@ export const useAuthStore = create<AuthState>()(
           }
         } catch (err: any) {
           set({ error: err.message, loading: false });
-        }
-      },
-
-      googleOAuth: async (idToken) => {
-        set({ loading: true, error: null });
-        try {
-          const query = `
-            mutation GoogleOAuth($input: GoogleOAuthInput!) {
-              googleOAuth(input: $input) {
-                user { id email username credits }
-                token
-                errors
-              }
-            }
-          `;
-          const variables = { input: { id_token: idToken } };
-          const data = await graphqlRequest(query, variables);
-
-          if (data.googleOAuth.errors?.length) {
-            set({ error: data.googleOAuth.errors.join(", ") });
-          } else {
-            set({
-              user: data.googleOAuth.user,
-              token: data.googleOAuth.token,
-              error: null,
-            });
-          }
-        } catch (err: any) {
-          set({ error: err.message });
-        } finally {
-          set({ loading: false });
         }
       },
 
