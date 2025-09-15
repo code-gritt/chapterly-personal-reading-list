@@ -21,6 +21,7 @@ interface AuthState {
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  googleOAuth: (idToken: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -54,6 +55,37 @@ export const useAuthStore = create<AuthState>()(
             set({
               user: data.register.user,
               token: data.register.token,
+              error: null,
+              loading: false,
+            });
+          }
+        } catch (error: any) {
+          set({ error: error.message, loading: false });
+        }
+      },
+
+      googleOAuth: async (idToken) => {
+        set({ loading: true, error: null });
+        try {
+          const query = `
+            mutation GoogleOAuth($input: GoogleOAuthInput!) {
+              googleOAuth(input: $input) {
+                user { id email username credits }
+                token
+                errors
+              }
+            }
+          `;
+          const variables = { input: { id_token: idToken } };
+
+          const data = await graphqlRequest(query, variables);
+
+          if (data.googleOAuth.errors && data.googleOAuth.errors.length > 0) {
+            set({ error: data.googleOAuth.errors.join(", "), loading: false });
+          } else {
+            set({
+              user: data.googleOAuth.user,
+              token: data.googleOAuth.token,
               error: null,
               loading: false,
             });

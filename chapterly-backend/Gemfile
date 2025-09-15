@@ -33,6 +33,10 @@ gem "graphql"
 # 🌍 CORS for frontend-backend communication
 gem "rack-cors"
 
+# 🔐 Google OAuth
+gem "omniauth-google-oauth2", "~> 1.1"
+gem "googleauth"
+
 group :development, :test do
   # Debugging
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

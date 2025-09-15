@@ -3,12 +3,34 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import Loader from "../components/Loader";
 
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const { register, loading, error } = useAuthStore();
+  const { register, googleOAuth, loading, error } = useAuthStore();
   const navigate = useNavigate();
+
+  const handleGoogleRegister = () => {
+    if (window.google) {
+      window.google.accounts.oauth2
+        .initTokenClient({
+          client_id:
+            "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com",
+          scope: "email profile",
+          callback: async (tokenResponse: any) => {
+            await googleOAuth(tokenResponse.access_token);
+            if (!error) navigate("/dashboard");
+          },
+        })
+        .requestAccessToken();
+    }
+  };
 
   const handleRegister = async () => {
     await register(email, password, username);
@@ -50,6 +72,18 @@ export default function Register() {
           className="w-full rounded-lg bg-[#9560EB] p-3 font-medium text-white hover:bg-[#6B46C1] disabled:opacity-50"
         >
           Register
+        </button>
+        <button
+          onClick={handleGoogleRegister}
+          disabled={loading}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-black hover:bg-gray-100 disabled:opacity-50"
+        >
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google"
+            className="h-5 w-5"
+          />
+          Continue with Google
         </button>
         <p className="mt-4 text-center text-white/70">
           Already have an account?{" "}
