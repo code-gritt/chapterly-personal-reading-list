@@ -1,0 +1,103 @@
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { graphqlRequest } from "../utils/graphql";
+
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  credits: number;
+}
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  error: string | null;
+  register: (
+    email: string,
+    password: string,
+    username: string,
+  ) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+}
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      loading: false,
+      error: null,
+
+      // ✅ Fixed register mutation with input object
+      register: async (email, password, username) => {
+        set({ loading: true, error: null });
+        try {
+          const query = `
+            mutation Register($input: RegisterInput!) {
+              register(input: $input) {
+                user { id email username credits }
+                token
+                errors
+              }
+            }
+          `;
+          const variables = { input: { email, password, username } };
+
+          const data = await graphqlRequest(query, variables);
+
+          if (data.register.errors && data.register.errors.length > 0) {
+            set({ error: data.register.errors.join(", "), loading: false });
+          } else {
+            set({
+              user: data.register.user,
+              token: data.register.token,
+              error: null,
+              loading: false,
+            });
+          }
+        } catch (error: any) {
+          set({ error: error.message, loading: false });
+        }
+      },
+
+      // ✅ Updated login mutation (assuming LoginInput is required)
+      login: async (email, password) => {
+        set({ loading: true, error: null });
+        try {
+          const query = `
+            mutation Login($input: LoginInput!) {
+              login(input: $input) {
+                user { id email username credits }
+                token
+                errors
+              }
+            }
+          `;
+          const variables = { input: { email, password } };
+
+          const data = await graphqlRequest(query, variables);
+
+          if (data.login.errors && data.login.errors.length > 0) {
+            set({ error: data.login.errors.join(", "), loading: false });
+          } else {
+            set({
+              user: data.login.user,
+              token: data.login.token,
+              error: null,
+              loading: false,
+            });
+          }
+        } catch (error: any) {
+          set({ error: error.message, loading: false });
+        }
+      },
+
+      logout: () =>
+        set({ user: null, token: null, error: null, loading: false }),
+    }),
+    { name: "auth-storage" },
+  ),
+);

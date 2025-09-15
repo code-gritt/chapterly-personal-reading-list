@@ -1,7 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-
-import appScreen from "../assets/images/app-screen.png";
 import { useMediaQuery } from "../hooks/use-media-query";
 
 export function ProductShowcase() {
