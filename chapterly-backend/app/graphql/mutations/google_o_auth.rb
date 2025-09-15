@@ -2,39 +2,32 @@ require 'googleauth'
 
 module Mutations
   class GoogleOAuth < BaseMutation
-    argument :input, Types::GoogleOAuthInput, required: true
+    argument :input, Types::Inputs::GoogleOAuthInput, required: true
 
     field :user, Types::UserType, null: true
     field :token, String, null: true
     field :errors, [String], null: false
 
     def resolve(input:)
-      id_token = input[:id_token] # Match GraphQL input field name
+      id_token = input[:id_token]
 
       begin
-        unless ENV['GOOGLE_CLIENT_ID']
-          Rails.logger.error("Google OAuth failed: GOOGLE_CLIENT_ID is not set")
-          return { user: nil, token: nil, errors: ['Google Client ID not configured'] }
-        end
+        # Hardcoded client ID (you can move to ENV later)
+        client_id = "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com"
 
-        # Verify ID token with Google
-        payload = Google::Auth::IDTokens.verify_oidc(
-          id_token,
-          audience: "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com"
-        )
+        payload = Google::Auth::IDTokens.verify_oidc(id_token, audience: client_id)
+        return { user: nil, token: nil, errors: ["Invalid Google token"] } unless payload
 
-        return { user: nil, token: nil, errors: ['Invalid Google token'] } unless payload
+        email = payload["email"]
+        username = payload["name"] || email.split("@").first
 
-        email = payload['email']
-        username = payload['name'] || email.split('@').first
-
-        user = User.find_or_create_by(email: email) do |u|
+        user = User.find_or_create_by!(email: email) do |u|
           u.username = username
           u.credits = 100
-          u.password = SecureRandom.hex(20) # Dummy password for Devise
+          u.password = SecureRandom.hex(20) # Devise dummy password
         end
 
-        # Generate token (consistent with login/register)
+        # Example token (replace with JWT in real app)
         token = Base64.strict_encode64(user.email)
 
         { user: user, token: token, errors: [] }

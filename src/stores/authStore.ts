@@ -20,8 +20,8 @@ interface AuthState {
     username: string,
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
   googleOAuth: (idToken: string) => Promise<void>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -45,7 +45,6 @@ export const useAuthStore = create<AuthState>()(
             }
           `;
           const variables = { input: { email, password, username } };
-
           const data = await graphqlRequest(query, variables);
 
           if (data.register.errors?.length) {
@@ -58,8 +57,8 @@ export const useAuthStore = create<AuthState>()(
               loading: false,
             });
           }
-        } catch (error: any) {
-          set({ error: error.message, loading: false });
+        } catch (err: any) {
+          set({ error: err.message, loading: false });
         }
       },
 
@@ -76,7 +75,6 @@ export const useAuthStore = create<AuthState>()(
             }
           `;
           const variables = { input: { email, password } };
-
           const data = await graphqlRequest(query, variables);
 
           if (data.login.errors?.length) {
@@ -89,8 +87,8 @@ export const useAuthStore = create<AuthState>()(
               loading: false,
             });
           }
-        } catch (error: any) {
-          set({ error: error.message, loading: false });
+        } catch (err: any) {
+          set({ error: err.message, loading: false });
         }
       },
 
@@ -106,9 +104,7 @@ export const useAuthStore = create<AuthState>()(
               }
             }
           `;
-          // Fixed to use id_token (snake_case) to match backend
-          const variables = { input: { id_token: idToken } };
-
+          const variables = { input: { id_token: idToken } }; // snake_case to match backend
           const data = await graphqlRequest(query, variables);
 
           if (data.googleOAuth.errors?.length) {
@@ -121,8 +117,8 @@ export const useAuthStore = create<AuthState>()(
               loading: false,
             });
           }
-        } catch (error: any) {
-          set({ error: error.message, loading: false });
+        } catch (err: any) {
+          set({ error: err.message, loading: false });
         }
       },
 
