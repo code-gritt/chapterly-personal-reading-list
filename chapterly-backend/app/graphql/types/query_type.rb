@@ -2,33 +2,41 @@
 
 module Types
   class QueryType < Types::BaseObject
-    field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
+    field :node, Types::NodeType, null: true,
+          description: "Fetches an object given its ID." do
       argument :id, ID, required: true, description: "ID of the object."
     end
-
     def node(id:)
       context.schema.object_from_id(id, context)
     end
 
-    field :nodes, [Types::NodeType, null: true], null: true, description: "Fetches a list of objects given a list of IDs." do
+    field :nodes, [Types::NodeType, null: true], null: true,
+          description: "Fetches a list of objects given a list of IDs." do
       argument :ids, [ID], required: true, description: "IDs of the objects."
     end
-
     def nodes(ids:)
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
     # Root-level test field
-    field :test_field, String, null: false, description: "An example field added by the generator"
+    field :test_field, String, null: false,
+          description: "An example field added by the generator"
     def test_field
       "Hello World!"
     end
 
-    # Add 'me' query to get current user
-    field :me, Types::UserType, null: true, description: "Returns the currently authenticated user"
-
+    # Get currently authenticated user
+    field :me, Types::UserType, null: true,
+          description: "Returns the currently authenticated user"
     def me
       context[:current_user]
+    end
+
+    # Get books belonging to current user
+    field :books, [Types::BookType], null: false,
+          description: "Returns all books for the currently authenticated user"
+    def books
+      context[:current_user]&.books || []
     end
   end
 end
