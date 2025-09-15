@@ -63,38 +63,6 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      googleOAuth: async (idToken) => {
-        set({ loading: true, error: null });
-        try {
-          const query = `
-            mutation GoogleOAuth($input: GoogleOAuthInput!) {
-              googleOAuth(input: $input) {
-                user { id email username credits }
-                token
-                errors
-              }
-            }
-          `;
-          // ✅ send id_token (snake_case, matches backend schema)
-          const variables = { input: { id_token: idToken } };
-
-          const data = await graphqlRequest(query, variables);
-
-          if (data.googleOAuth.errors?.length) {
-            set({ error: data.googleOAuth.errors.join(", "), loading: false });
-          } else {
-            set({
-              user: data.googleOAuth.user,
-              token: data.googleOAuth.token,
-              error: null,
-              loading: false,
-            });
-          }
-        } catch (error: any) {
-          set({ error: error.message, loading: false });
-        }
-      },
-
       login: async (email, password) => {
         set({ loading: true, error: null });
         try {
@@ -117,6 +85,38 @@ export const useAuthStore = create<AuthState>()(
             set({
               user: data.login.user,
               token: data.login.token,
+              error: null,
+              loading: false,
+            });
+          }
+        } catch (error: any) {
+          set({ error: error.message, loading: false });
+        }
+      },
+
+      googleOAuth: async (idToken) => {
+        set({ loading: true, error: null });
+        try {
+          const query = `
+            mutation GoogleOAuth($input: GoogleOAuthInput!) {
+              googleOAuth(input: $input) {
+                user { id email username credits }
+                token
+                errors
+              }
+            }
+          `;
+          // Fixed to use id_token (snake_case) to match backend
+          const variables = { input: { id_token: idToken } };
+
+          const data = await graphqlRequest(query, variables);
+
+          if (data.googleOAuth.errors?.length) {
+            set({ error: data.googleOAuth.errors.join(", "), loading: false });
+          } else {
+            set({
+              user: data.googleOAuth.user,
+              token: data.googleOAuth.token,
               error: null,
               loading: false,
             });

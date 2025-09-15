@@ -16,20 +16,16 @@ export default function Register() {
   const { register, googleOAuth, loading, error } = useAuthStore();
   const navigate = useNavigate();
 
-  // 🔑 Google Register (uses ID token)
   const handleGoogleRegister = () => {
     if (window.google) {
       window.google.accounts.id.initialize({
         client_id:
           "548839657777-ikmkge4he6kdmjrnf6rotd53doi5r9kr.apps.googleusercontent.com",
         callback: async (response: any) => {
-          // response.credential = Google ID token (JWT)
           await googleOAuth(response.credential);
           if (!error) navigate("/dashboard");
         },
       });
-
-      // Show Google One Tap
       window.google.accounts.id.prompt();
     }
   };
@@ -47,7 +43,6 @@ export default function Register() {
           Join Chapterly
         </h2>
         {error && <p className="mb-4 text-center text-red-400">{error}</p>}
-
         <input
           type="text"
           placeholder="Username"
@@ -69,7 +64,6 @@ export default function Register() {
           onChange={(e) => setPassword(e.target.value)}
           className="mb-4 w-full rounded-lg border border-white/20 bg-black/50 p-3 text-white focus:border-[#9560EB] focus:outline-none"
         />
-
         <button
           onClick={handleRegister}
           disabled={loading}
@@ -77,7 +71,6 @@ export default function Register() {
         >
           Register
         </button>
-
         <button
           onClick={handleGoogleRegister}
           disabled={loading}
@@ -90,7 +83,6 @@ export default function Register() {
           />
           Continue with Google
         </button>
-
         <p className="mt-4 text-center text-white/70">
           Already have an account?{" "}
           <button
