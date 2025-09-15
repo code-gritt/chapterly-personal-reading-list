@@ -26,12 +26,6 @@ export default function Login() {
     await login(email, password);
   };
 
-  const handleGoogleLogin = () => {
-    if (window.google) {
-      window.google.accounts.id.prompt(); // shows one-tap
-    }
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-black px-4 py-12">
       <Loader isLoading={loading} />
